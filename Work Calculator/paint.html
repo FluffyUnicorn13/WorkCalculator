@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paint Calculations</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="form-container">
+        <h1>Paint — Enter Values</h1>
+
+        <label for="lcs">LCS:</label>
+        <input type="number" id="lcs" step="any" />
+
+        <label for="lcsd">LCSD:</label>
+        <input type="number" id="lcsd" step="any" />
+
+        <label for="ms">MS:</label>
+        <input type="number" id="ms" step="any" />
+
+        <button id="calcBtn" onclick="calculatePaint()">Calculate</button>
+
+        <h2>Results</h2>
+        <p>Relative Percent Difference (RPD): <span id="rpdResult">—</span></p>
+        <p>Spike Recovery (SR): <span id="srResult">—</span></p>
+    </div>
+
+    <script>
+        function calculatePaint() {
+            const lcs = parseFloat(document.getElementById('lcs').value);
+            const lcsd = parseFloat(document.getElementById('lcsd').value);
+            const ms = parseFloat(document.getElementById('ms').value);
+
+            if (isNaN(lcs) || isNaN(lcsd) || isNaN(ms)) {
+                alert('Please enter valid numbers for LCS, LCSD, and MS.');
+                return;
+            }
+
+            // RPD = ((LCS - LCSD) * 100 / (LCS + LCSD)) / 2
+            const rpd = ((lcs - lcsd) * 100 / (lcs + lcsd)) / 2;
+
+            // SR = MS * 100 / 4
+            const sr = (ms * 100) / 4;
+
+            document.getElementById('rpdResult').textContent = rpd.toFixed(2) + '%';
+            document.getElementById('srResult').textContent = sr.toFixed(2) + '%';
+        }
+    </script>
+</body>
+</html>
