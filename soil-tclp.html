@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soil / TCLP Calculations</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="form-container">
+        <h1>Soil / TCLP — Enter Values</h1>
+
+        <label for="sample">Sample:</label>
+        <input type="number" id="sample" step="any" />
+
+        <label for="duplicate">Duplicate Sample:</label>
+        <input type="number" id="duplicate" step="any" />
+
+        <label for="ms">MS:</label>
+        <input type="number" id="ms" step="any" />
+
+        <button id="calcBtn" onclick="calculateSoilTCLP()">Calculate</button>
+
+        <h2>Results</h2>
+        <p>Relative Percent Difference (RPD): <span id="rpdResult">—</span></p>
+        <p>Spike Recovery (SR): <span id="srResult">—</span></p>
+
+        <button onclick="location.href='index.html'">Back to Menu</button>
+    </div>
+
+    <script>
+        function calculateSoilTCLP() {
+            const sample = parseFloat(document.getElementById('sample').value);
+            const duplicate = parseFloat(document.getElementById('duplicate').value);
+            const ms = parseFloat(document.getElementById('ms').value);
+
+            if (isNaN(sample) || isNaN(duplicate) || isNaN(ms)) {
+                alert('Please enter valid numbers for Sample, Duplicate Sample, and MS.');
+                return;
+            }
+
+            // RPD = ((Sample - Duplicate Sample) * 100 / (Sample + Duplicate Sample)) / 2
+            const rpd = ((sample - duplicate) * 100 / (sample + duplicate)) / 2;
+
+            // SR = (MS - Sample) * 100 / 4
+            const sr = ((ms - sample) * 100) / 4;
+
+            document.getElementById('rpdResult').textContent = rpd.toFixed(2) + '%';
+            document.getElementById('srResult').textContent = sr.toFixed(2) + '%';
+        }
+    </script>
+</body>
+</html>
