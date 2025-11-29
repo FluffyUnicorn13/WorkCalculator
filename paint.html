@@ -7,45 +7,65 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="form-container">
-        <h1>Paint — Enter Values</h1>
 
-        <label for="lcs">LCS:</label>
-        <input type="number" id="lcs" step="any" />
+    <div class="matrix-container">
+        <h1>Paint</h1>
 
-        <label for="lcsd">LCSD:</label>
-        <input type="number" id="lcsd" step="any" />
+        <div class="matrix-content">
 
-        <label for="ms">MS:</label>
-        <input type="number" id="ms" step="any" />
+            <!-- LEFT SIDE: INPUTS -->
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="lcs">LCS:</label>
+                    <input type="number" id="lcs">
+                </div>
 
-        <button id="calcBtn" onclick="calculatePaint()">Calculate</button>
+                <div class="input-group">
+                    <label for="lcsd">LCSD:</label>
+                    <input type="number" id="lcsd">
+                </div>
 
-        <h2>Results</h2>
-        <p>Relative Percent Difference (RPD): <span id="rpdResult">—</span></p>
-        <p>Spike Recovery (SR): <span id="srResult">—</span></p>
+                <div class="input-group">
+                    <label for="ms">MS:</label>
+                    <input type="number" id="ms">
+                </div>
+
+                <button onclick="calculatePaint()">Calculate</button>
+            </div>
+
+            <!-- RIGHT SIDE: RESULTS -->
+            <div class="results-column">
+                <h2>Results</h2>
+                <p>Relative Percent Difference (RPD): <span id="rpdResult">—</span></p>
+                <p>Spike Recovery (SR): <span id="srResult">—</span></p>
+            </div>
+
+        </div>
     </div>
 
     <script>
         function calculatePaint() {
-            const lcs = parseFloat(document.getElementById('lcs').value);
-            const lcsd = parseFloat(document.getElementById('lcsd').value);
-            const ms = parseFloat(document.getElementById('ms').value);
+            const lcs = parseFloat(document.getElementById("lcs").value);
+            const lcsd = parseFloat(document.getElementById("lcsd").value);
+            const ms = parseFloat(document.getElementById("ms").value);
 
             if (isNaN(lcs) || isNaN(lcsd) || isNaN(ms)) {
-                alert('Please enter valid numbers for LCS, LCSD, and MS.');
+                alert("Please enter valid numbers in all fields.");
                 return;
             }
 
-            // RPD = ((LCS - LCSD) * 100 / (LCS + LCSD)) / 2
-            const rpd = ((lcs - lcsd) * 100 / (lcs + lcsd)) / 2;
+            // Correct RPD formula:
+            // RPD = (LCS - LCSD) * 100 / ((LCS + LCSD) / 2)
+            const rpd = ((lcs - lcsd) * 100) / ((lcs + lcsd) / 2);
 
-            // SR = MS * 100 / 4
-            const sr = (ms * 100) / 4;
+            // Correct SR formula:
+            // SR = (MS - LCS) * 100 / 4
+            const sr = ((ms - lcs) * 100) / 4;
 
-            document.getElementById('rpdResult').textContent = rpd.toFixed(2) + '%';
-            document.getElementById('srResult').textContent = sr.toFixed(2) + '%';
+            document.getElementById("rpdResult").textContent = rpd.toFixed(2) + "%";
+            document.getElementById("srResult").textContent = sr.toFixed(2) + "%";
         }
     </script>
+
 </body>
 </html>
