@@ -17,17 +17,17 @@
             <div class="inputs-column">
                 <div class="input-group">
                     <label for="sample">Sample:</label>
-                    <input type="number" id="sample">
+                    <input type="number" id="sample" step="any">
                 </div>
 
                 <div class="input-group">
                     <label for="duplicate">Duplicate Sample:</label>
-                    <input type="number" id="duplicate">
+                    <input type="number" id="duplicate" step="any">
                 </div>
 
                 <div class="input-group">
                     <label for="ms">MS:</label>
-                    <input type="number" id="ms">
+                    <input type="number" id="ms" step="any">
                 </div>
 
                 <button onclick="calculateSoil()">Calculate</button>
@@ -54,15 +54,17 @@
                 return;
             }
 
-            // Correct RPD formula:
-            // RPD = (Sample - Duplicate) * 100 / ((Sample + Duplicate) / 2)
-            const rpd = ((sample - duplicate) * 100) / ((sample + duplicate) / 2);
+            const denom = (sample + duplicate) / 2;
+            if (denom === 0) {
+                document.getElementById("rpdResult").textContent = "—";
+            } else {
+                // RPD = |Sample - Duplicate| * 100 / ((Sample + Duplicate) / 2)
+                const rpd = (Math.abs(sample - duplicate) * 100) / denom;
+                document.getElementById("rpdResult").textContent = rpd.toFixed(2) + "%";
+            }
 
-            // Correct SR formula:
             // SR = (MS - Sample) * 100 / 4
             const sr = ((ms - sample) * 100) / 4;
-
-            document.getElementById("rpdResult").textContent = rpd.toFixed(2) + "%";
             document.getElementById("srResult").textContent = sr.toFixed(2) + "%";
         }
     </script>
