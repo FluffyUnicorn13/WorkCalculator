@@ -40,7 +40,7 @@
             // Correct Paint RPD: |LCS − LCSD| / ((LCS + LCSD)/2) * 100
             const rpd = (Math.abs(lcs - lcsd) / ((lcs + lcsd) / 2)) * 100;
 
-            // Correct Paint Spike Recovery: MS * 100 / 4
+            // Correct Paint SR: MS * 100 / 4
             const sr = (ms * 100) / 4;
 
             document.getElementById('rpdResult').textContent = rpd.toFixed(2) + '%';
