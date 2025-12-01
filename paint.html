@@ -8,64 +8,52 @@
 </head>
 <body>
 
-    <div class="page-container">
+    <div class="matrix-container">
+        <h1>Paint</h1>
 
-        <h1 class="page-title">Paint</h1>
+        <div class="matrix-content">
+            <!-- LEFT COLUMN: Inputs -->
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="lcs">LCS:</label>
+                    <input type="number" id="lcs" step="any" />
+                </div>
 
-        <div class="calc-grid">
+                <div class="input-group">
+                    <label for="lcsd">LCSD:</label>
+                    <input type="number" id="lcsd" step="any" />
+                </div>
 
-            <!-- LEFT SIDE — INPUTS -->
-            <div class="input-section">
-                <label for="lcs">LCS:</label>
-                <input type="number" id="lcs">
+                <div class="input-group">
+                    <label for="ms">MS:</label>
+                    <input type="number" id="ms" step="any" />
+                </div>
 
-                <label for="lcsd">LCSD:</label>
-                <input type="number" id="lcsd">
-
-                <label for="ms">MS:</label>
-                <input type="number" id="ms">
-
-                <button onclick="calculatePaint()">Calculate</button>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button onclick="calculatePaint()">Calculate</button>
+                    <button onclick="clearPaint()" type="button">Clear</button>
+                </div>
             </div>
 
-            <!-- RIGHT SIDE — RESULTS BOX -->
-           <div class="results-box">
-    <h2>Results</h2>
-
-    <div class="result-row">
-        <span>RPD:</span>
-        <span id="rpdResult">—</span>
+            <!-- RIGHT COLUMN: Results -->
+            <div class="results-column">
+                <div class="results-box">
+                    <h2>Results</h2>
+                    <div class="result-row">
+                        <span>RPD:</span>
+                        <span id="rpdResult">—</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Spike Recovery:</span>
+                        <span id="srResult">—</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:#555; margin-top:12px;">
+                        <em>RPD shows signed value; magnitude (absolute) shown in parentheses.</em>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="result-row">
-        <span>Spike Recovery:</span>
-        <span id="srResult">—</span>
-    </div>
-</div>
-
 
     <script>
         function calculatePaint() {
-            const lcs = parseFloat(document.getElementById('lcs').value);
-            const lcsd = parseFloat(document.getElementById('lcsd').value);
-            const ms = parseFloat(document.getElementById('ms').value);
-
-            if (isNaN(lcs) || isNaN(lcsd) || isNaN(ms)) {
-                alert("Please enter all numbers.");
-                return;
-            }
-
-            // PAINT RPD: |LCS − LCSD| / ((LCS + LCSD)/2) × 100
-            const rpd = (Math.abs(lcs - lcsd) / ((lcs + lcsd) / 2)) * 100;
-
-            // PAINT Spike Recovery: MS × 100 / 4
-            const sr = (ms * 100) / 4;
-
-            document.getElementById('rpdResult').textContent = rpd.toFixed(2) + "%";
-            document.getElementById('srResult').textContent = sr.toFixed(2) + "%";
-        }
-    </script>
-
-</body>
-</html>
-
