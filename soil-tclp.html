@@ -1,94 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Soil / TCLP</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soil/TCLP Calculations</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="matrix-container">
-    <h1>Soil / TCLP</h1>
+    <div class="form-container">
+        <h1>Soil / TCLP — Enter Values</h1>
 
-    <div class="matrix-content">
-      <!-- Inputs -->
-      <div class="inputs-column">
-        <div class="input-group">
-          <label for="sample">Sample:</label>
-          <input type="number" id="sample" step="any" />
-        </div>
+        <label for="sample">Sample:</label>
+        <input type="number" id="sample" />
 
-        <div class="input-group">
-          <label for="duplicate">Duplicate Sample:</label>
-          <input type="number" id="duplicate" step="any" />
-        </div>
+        <label for="duplicate">Duplicate Sample:</label>
+        <input type="number" id="duplicate" />
 
-        <div class="input-group">
-          <label for="ms">MS:</label>
-          <input type="number" id="ms" step="any" />
-        </div>
+        <label for="ms">MS:</label>
+        <input type="number" id="ms" />
 
-        <div style="display:flex;gap:10px;">
-          <button onclick="calculateSoil()">Calculate</button>
-          <button onclick="clearSoil()" type="button">Clear</button>
-        </div>
+        <button id="calcBtn" onclick="calculateSoil()">Calculate</button>
 
-        <p id="errorSoil" style="color:#b00020; display:none; margin-top:8px;"></p>
-      </div>
-
-      <!-- Results -->
-      <div class="results-column">
         <h2>Results</h2>
-        <p>Relative Percent Difference (RPD): <strong><span id="rpdResult">—</span></strong></p>
-        <p>Spike Recovery (SR): <strong><span id="srResult">—</span></strong></p>
-        <p style="font-size:0.9rem; color:#555; margin-top:12px;"><em>RPD shows signed value; magnitude (absolute) shown in parentheses.</em></p>
-      </div>
+        <p>Relative Percent Difference (RPD): <span id="rpdResult">—</span></p>
+        <p>Spike Recovery (SR): <span id="srResult">—</span></p>
     </div>
-  </div>
 
-  <script>
-    function showErrorSoil(msg) {
-      const el = document.getElementById('errorSoil');
-      if (!msg) { el.style.display = 'none'; el.textContent = ''; }
-      else { el.style.display = 'block'; el.textContent = msg; }
-    }
+    <script>
+        function calculateSoil() {
+            const sample = parseFloat(document.getElementById('sample').value);
+            const duplicate = parseFloat(document.getElementById('duplicate').value);
+            const ms = parseFloat(document.getElementById('ms').value);
 
-    function calculateSoil() {
-      showErrorSoil('');
-      const sample = parseFloat(document.getElementById('sample').value);
-      const duplicate = parseFloat(document.getElementById('duplicate').value);
-      const ms = parseFloat(document.getElementById('ms').value);
+            if (isNaN(sample) || isNaN(duplicate) || isNaN(ms)) {
+                alert('Please enter valid numbers for Sample, Duplicate, and MS.');
+                return;
+            }
 
-      if (Number.isNaN(sample) || Number.isNaN(duplicate) || Number.isNaN(ms)) {
-        showErrorSoil('Please enter numeric values for Sample, Duplicate, and MS.');
-        document.getElementById('rpdResult').textContent = '—';
-        document.getElementById('srResult').textContent = '—';
-        return;
-      }
+            // Soil/TCLP RPD: |Sample − Duplicate| / ((Sample + Duplicate)/2) * 100
+            const rpd = (Math.abs(sample - duplicate) / ((sample + duplicate) / 2)) * 100;
 
-      const denom = (sample + duplicate) / 2;
-      if (denom === 0) {
-        showErrorSoil('(Sample + Duplicate)/2 is zero — RPD cannot be calculated.)');
-        document.getElementById('rpdResult').textContent = '—';
-      } else {
-        // SIGNED RPD: (Sample - Duplicate) / ((Sample + Duplicate)/2) * 100
-        const rpdSigned = ((sample - duplicate) / denom) * 100;
-        document.getElementById('rpdResult').textContent = `${rpdSigned.toFixed(2)}% (${Math.abs(rpdSigned).toFixed(2)}% magnitude)`;
-      }
+            // Soil/TCLP SR: (MS − Sample) * 100 / 4
+            const sr = ((ms - sample) * 100) / 4;
 
-      // Soil SR = (MS - Sample) * 100 / 4
-      const sr = ((ms - sample) * 100) / 4;
-      document.getElementById('srResult').textContent = sr.toFixed(2) + '%';
-    }
-
-    function clearSoil() {
-      document.getElementById('sample').value = '';
-      document.getElementById('duplicate').value = '';
-      document.getElementById('ms').value = '';
-      document.getElementById('rpdResult').textContent = '—';
-      document.getElementById('srResult').textContent = '—';
-      showErrorSoil('');
-    }
-  </script>
+            document.getElementById('rpdResult').textContent = rpd.toFixed(2) + '%';
+            document.getElementById('srResult').textContent = sr.toFixed(2) + '%';
+        }
+    </script>
 </body>
 </html>
