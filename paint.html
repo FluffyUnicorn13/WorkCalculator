@@ -36,24 +36,17 @@
             </div>
 
             <!-- RIGHT COLUMN: Results -->
-<div class="results-column">
-  <div class="results-box">
-    <h2>Results</h2>
-    <div class="result-row">
-      <span>RPD:</span>
-      <span id="rpdResult">—</span>
+      <div class="results-column">
+        <h2>Results</h2>
+        <p>Relative Percent Difference (RPD): <strong><span id="rpdResult">—</span></strong></p>
+        <p>Spike Recovery (SR): <strong><span id="srResult">—</span></strong></p>
+        <p style="font-size:0.9rem; color:#555; margin-top:12px;"><em>RPD shows signed value; magnitude (absolute) shown in parentheses.</em></p>
+      </div>
     </div>
-    <div class="result-row">
-      <span>Spike Recovery:</span>
-      <span id="srResult">—</span>
-    </div>
-    <p style="font-size:0.9rem; color:#555; margin-top:12px;">
-      <em>RPD shows signed value; magnitude (absolute) shown in parentheses.</em>
-    </p>
   </div>
-</div>
 
 
     <script>
         function calculatePaint() {
+
 
